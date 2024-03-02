@@ -8,18 +8,19 @@ public class Physics : MonoBehaviour
     public float CheckRadius = 0.1f;
     public LayerMask GroundMask;
 
-    public Vector3 Velocity;
+    public Vector2 Velocity;
     public float Gravity = 9.81f;
     public float Mass = 1f;
     //public float AirResistance = -100f;
     public bool IsGrounded = true;
 
-    Vector3 _prevVelocity;
+    Vector2 _prevVelocity;
+    bool _calculateAirResistance;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        _calculateAirResistance = true;
     }
 
     // Update is called once per frame
@@ -58,10 +59,23 @@ public class Physics : MonoBehaviour
             Velocity.y = 0f;
         }
 
-        transform.position += Velocity * Time.deltaTime;
+        if (!IsGrounded && _calculateAirResistance)
+        {
+            Vector2 dragNorm = -Velocity.normalized;
+
+            float dragForce = 0.45f * Mathf.PI * Mathf.Pow(transform.localScale.x, 2) * Velocity.magnitude * 0.5f * Time.deltaTime;
+
+            Debug.Log(dragForce);
+            Debug.Log(dragNorm);
+            Debug.Log(Velocity);
+
+            Velocity += dragNorm * dragForce;
+        }
+
+        transform.position += (Vector3)Velocity * Time.deltaTime;
     }
 
-    public void AddForce(Vector3 force)
+    public void AddForce(Vector2 force)
     {
         Velocity += force/Mass;
 
@@ -98,5 +112,10 @@ public class Physics : MonoBehaviour
         {
             return -1;
         }
+    }
+
+    public void CalculateAirResistance()
+    {
+        _calculateAirResistance = !_calculateAirResistance;
     }
 }

@@ -13,9 +13,6 @@ public class ThrowManager : MonoBehaviour
     public TMP_InputField InputFieldAngle;
     Physics _physics;
 
-    public string ForceText;
-    public string AngleText;
-
     Vector2 _pressedMousePos;
     Vector2 _prevThrowablePos;
     Vector2 _throwVector;
@@ -45,9 +42,12 @@ public class ThrowManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_thrown && !_disabled)
+        if (!HoveringOver.Hovering)
         {
-            Setup();
+            if (!_thrown && !_disabled)
+            {
+                Setup();
+            }
         }
         if (_thrown && !_landed)
         {
@@ -64,9 +64,6 @@ public class ThrowManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             _pressedMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            ForceText = InputFieldForce.text;
-            AngleText = InputFieldAngle.text;
         }
         if (Input.GetMouseButton(0))
         {
@@ -93,25 +90,9 @@ public class ThrowManager : MonoBehaviour
 
     public void Throw(float force, float angle, bool button)
     {
-        if (button)
-        {
-            InputFieldForce.text = ForceText;
-            InputFieldAngle.text = AngleText;
-        }
-
         angle *= Mathf.Deg2Rad;
         Vector2 normalization = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         _physics.AddForce(normalization * force);
         _thrown = true;
-    }
-
-    public void DisabeSetup()
-    {
-        _disabled = true;
-    }
-
-    public void EnableSetup()
-    {
-        _disabled = false;
     }
 }

@@ -9,8 +9,8 @@ public class ThrowButton : MonoBehaviour
     {
         int force;
         int angle;
-        int.TryParse(ThrowManager.Instance.ForceText, out force);
-        int.TryParse(ThrowManager.Instance.AngleText, out angle);
+        int.TryParse(ThrowManager.Instance.InputFieldForce.text, out force);
+        int.TryParse(ThrowManager.Instance.InputFieldAngle.text, out angle);
 
         ThrowManager.Instance.Throw(force, angle, true);
     }
