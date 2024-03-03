@@ -12,6 +12,7 @@ public class ThrowManager : MonoBehaviour
     public TMP_InputField InputFieldForce;
     public TMP_InputField InputFieldAngle;
     Physics _physics;
+    LineRenderer _line;
 
     Vector2 _pressedMousePos;
     Vector2 _prevThrowablePos;
@@ -22,6 +23,7 @@ public class ThrowManager : MonoBehaviour
     bool _thrown;
     bool _disabled;
     bool _landed;
+    bool _pressed;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +34,8 @@ public class ThrowManager : MonoBehaviour
         }
 
         _physics = Throwable.GetComponent<Physics>();
+        _line = GetComponent<LineRenderer>();
+
         _prevThrowablePos = Throwable.transform.position;
 
         _thrown = false;
@@ -42,7 +46,8 @@ public class ThrowManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!HoveringOver.Hovering)
+        Debug.Log(HoveringOver.Touching);
+        if (!HoveringOver.Touching)
         {
             if (!_thrown && !_disabled)
             {
@@ -53,7 +58,7 @@ public class ThrowManager : MonoBehaviour
         {
             if (_physics.Velocity.y == 0)
             {
-                Debug.Log(Throwable.transform.position.x - _prevThrowablePos.x);
+                ResultManager.Instance.Results();
                 _landed = true;
             }
         }
@@ -67,7 +72,11 @@ public class ThrowManager : MonoBehaviour
         }
         if (Input.GetMouseButton(0))
         {
-            _throwVector = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - _pressedMousePos;
+            Vector2 mousePos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _throwVector = mousePos - _pressedMousePos;
+
+            _line.SetPosition(0, _pressedMousePos);
+            _line.SetPosition(1, mousePos);
 
             for (int i = 0; i < 2; i++)
             {
@@ -82,10 +91,15 @@ public class ThrowManager : MonoBehaviour
             InputFieldForce.text = _throwVector.magnitude.ToString() + "N";
             InputFieldAngle.text = _throwAngle.ToString() + " grader";
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && _pressed)
         {
+            for (int i = 0; i < 2; i++)
+            {
+                _line.SetPosition(i, Vector3.zero);
+            }
             Throw(_throwVector.magnitude, _throwAngle, false);
         }
+        _pressed = Input.GetMouseButton(0);
     }
 
     public void Throw(float force, float angle, bool button)
@@ -93,6 +107,7 @@ public class ThrowManager : MonoBehaviour
         angle *= Mathf.Deg2Rad;
         Vector2 normalization = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         _physics.AddForce(normalization * force);
+        ResultManager.Instance.StartVelocity = force;
         _thrown = true;
     }
 }

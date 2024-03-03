@@ -21,7 +21,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(OverUI);
+        
     }
 
 

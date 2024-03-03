@@ -7,11 +7,25 @@ public class ThrowButton : MonoBehaviour
 {
     public void Throw()
     {
-        int force;
-        int angle;
-        int.TryParse(ThrowManager.Instance.InputFieldForce.text, out force);
-        int.TryParse(ThrowManager.Instance.InputFieldAngle.text, out angle);
+        float force;
+        float angle;
+        bool tryForce = float.TryParse(ThrowManager.Instance.InputFieldForce.text, out force);
+        bool tryAngle = float.TryParse(ThrowManager.Instance.InputFieldAngle.text, out angle);
 
-        ThrowManager.Instance.Throw(force, angle, true);
+        if (tryForce && tryAngle)
+        {
+            ThrowManager.Instance.Throw(force, angle, true);
+        }
+        else
+        {
+            if (!tryForce)
+            {
+                ThrowManager.Instance.InputFieldForce.text = "";
+            }
+            if (!tryAngle)
+            {
+                ThrowManager.Instance.InputFieldAngle.text = "";
+            }
+        }
     }
 }

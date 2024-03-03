@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Physics : MonoBehaviour
 {
@@ -8,27 +9,31 @@ public class Physics : MonoBehaviour
     public float CheckRadius = 0.1f;
     public LayerMask GroundMask;
 
-    public Vector2 Velocity;
-    public float Gravity = 9.81f;
-    public float Mass = 1f;
+    [HideInInspector] public Vector2 Velocity;
+    public Global Stats;
+    //public float Gravity = 9.81f;
+    //public float AirDensity = 1f;
+    //public float Mass = 1f;
     //public float AirResistance = -100f;
-    public bool IsGrounded = true;
+    public bool IsGrounded { get; private set; }
 
     Vector2 _prevVelocity;
-    bool _calculateAirResistance;
+    Vector2 _startPos;
+    //bool _calculateAirResistance;
 
     // Start is called before the first frame update
     void Start()
     {
-        _calculateAirResistance = true;
+        _startPos = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Physics2D.OverlapCircle(GroundCheck.position, CheckRadius, GroundMask) != null)
+        if (transform.position.y <= _startPos.y)
         {
             IsGrounded = true;
+            transform.position = new Vector3(transform.position.x, _startPos.y, transform.position.z);
         }
         else
         {
@@ -51,7 +56,7 @@ public class Physics : MonoBehaviour
         }
         else
         {
-            Velocity.y += -Gravity * Time.deltaTime;
+            Velocity.y += -Stats.Gravity * Time.deltaTime;
         }
 
         if (IsGrounded && Velocity.y < 0)
@@ -59,11 +64,11 @@ public class Physics : MonoBehaviour
             Velocity.y = 0f;
         }
 
-        if (!IsGrounded && _calculateAirResistance)
+        if (!IsGrounded && Stats.CalculateAirResistance)
         {
             Vector2 dragNorm = -Velocity.normalized;
 
-            float dragForce = 0.45f * Mathf.PI * Mathf.Pow(transform.localScale.x, 2) * Velocity.magnitude * 0.5f * Time.deltaTime;
+            float dragForce = 0.45f * Stats.AirDensity * Mathf.PI * Mathf.Pow(transform.localScale.x, 2) * Velocity.magnitude * 0.5f * Time.deltaTime;
 
             Debug.Log(dragForce);
             Debug.Log(dragNorm);
@@ -77,7 +82,7 @@ public class Physics : MonoBehaviour
 
     public void AddForce(Vector2 force)
     {
-        Velocity += force/Mass;
+        Velocity += force/Stats.Mass;
 
         _prevVelocity.x = Velocity.x;
     }
@@ -112,10 +117,5 @@ public class Physics : MonoBehaviour
         {
             return -1;
         }
-    }
-
-    public void CalculateAirResistance()
-    {
-        _calculateAirResistance = !_calculateAirResistance;
     }
 }
