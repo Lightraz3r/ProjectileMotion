@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5179761fef750d4b93a85f3710765da, type: 3}
   m_Name: PhysicsStats
   m_EditorClassIdentifier: 
-  Gravity: 9.81
+  Gravity: 98.1
   AirDensity: 1
   Mass: 1
-  CalculateAirResistance: 0
+  CalculateAirResistance: 1

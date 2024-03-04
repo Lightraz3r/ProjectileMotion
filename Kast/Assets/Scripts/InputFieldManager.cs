@@ -22,7 +22,7 @@ public class InputFieldManager : MonoBehaviour
         float num;
         bool tryNum = float.TryParse(inputField.text, out num);
 
-        if (tryNum)
+        if (tryNum && num > 0)
         {
             if (inputField == Gravity)
             {

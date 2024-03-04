@@ -29,7 +29,10 @@ public class ResultManager : MonoBehaviour
 
     private void Update()
     {
-        timer += Time.deltaTime;
+        if (ThrowManager.Instance.Thrown)
+        {
+            timer += Time.deltaTime;
+        }
         if (Throwable.transform.position.y > _prevHeight)
         {
             _maxHeight = Throwable.transform.position.y - _prevThrowablePos.y;

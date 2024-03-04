@@ -20,7 +20,7 @@ public class ThrowManager : MonoBehaviour
 
     float _throwAngle;
 
-    bool _thrown;
+    public bool Thrown { get; private set; }
     bool _disabled;
     bool _landed;
     bool _pressed;
@@ -38,7 +38,7 @@ public class ThrowManager : MonoBehaviour
 
         _prevThrowablePos = Throwable.transform.position;
 
-        _thrown = false;
+        Thrown = false;
         _disabled = false;
         _landed = false;
     }
@@ -46,15 +46,14 @@ public class ThrowManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(HoveringOver.Touching);
         if (!HoveringOver.Touching)
         {
-            if (!_thrown && !_disabled)
+            if (!Thrown && !_disabled)
             {
                 Setup();
             }
         }
-        if (_thrown && !_landed)
+        if (Thrown && !_landed)
         {
             if (_physics.Velocity.y == 0)
             {
@@ -106,8 +105,10 @@ public class ThrowManager : MonoBehaviour
     {
         angle *= Mathf.Deg2Rad;
         Vector2 normalization = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+        Debug.Log(normalization);
+        Debug.Log(force);
         _physics.AddForce(normalization * force);
         ResultManager.Instance.StartVelocity = force;
-        _thrown = true;
+        Thrown = true;
     }
 }

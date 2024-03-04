@@ -17,7 +17,7 @@ public class WidenCamera : MonoBehaviour
         if (Camera.main.orthographicSize + scrollDelta > 0)
         {
             Camera.main.orthographicSize += scrollDelta;
-            Camera.main.transform.position += new Vector3(2.14f * scrollDelta, scrollDelta);
+            Camera.main.transform.position += new Vector3(Camera.main.aspect * scrollDelta, scrollDelta);
         }
     }
 }
