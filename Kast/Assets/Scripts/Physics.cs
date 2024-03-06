@@ -13,21 +13,13 @@ public class Physics : MonoBehaviour
     public Global Stats;
     public bool IsGrounded { get; private set; }
 
-    Vector2 _startPos;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        _startPos = transform.position;
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y <= _startPos.y)
+        if (transform.position.y <= ThrowableStartPosition.StartPos.y)
         {
             IsGrounded = true;
-            transform.position = new Vector3(transform.position.x, _startPos.y, transform.position.z);
+            transform.position = new Vector3(transform.position.x, ThrowableStartPosition.StartPos.y, transform.position.z);
         }
         else
         {
@@ -40,6 +32,7 @@ public class Physics : MonoBehaviour
             //Velocity.y = Velocity.y * Velocity.normalized.y - Stats.Gravity * Time.deltaTime;
             Velocity.x *= Stats.Elasticity;
             Velocity.y *= -Stats.Elasticity;
+            ThrowManager.Instance.ShowResults();
         }
         else
         {

@@ -24,6 +24,7 @@ public class ThrowManager : MonoBehaviour
     bool _disabled;
     bool _landed;
     bool _pressed;
+    bool _yes;
 
     // Start is called before the first frame update
     void Start()
@@ -41,24 +42,25 @@ public class ThrowManager : MonoBehaviour
         Thrown = false;
         _disabled = false;
         _landed = false;
+        _yes = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Thrown && !_landed)
+        {
+            if (_yes)
+            {
+                ResultManager.Instance.Results();
+                _landed = true;
+            }
+        }
         if (!HoveringOver.Touching)
         {
             if (!Thrown && !_disabled)
             {
                 Setup();
-            }
-        }
-        if (Thrown && !_landed)
-        {
-            if (_physics.Velocity.y == 0)
-            {
-                ResultManager.Instance.Results();
-                _landed = true;
             }
         }
     }
@@ -108,5 +110,10 @@ public class ThrowManager : MonoBehaviour
         _physics.AddVelocity(normalization * velocity);
         ResultManager.Instance.StartVelocity = velocity;
         Thrown = true;
+    }
+
+    public void ShowResults()
+    {
+        _yes = true;
     }
 }

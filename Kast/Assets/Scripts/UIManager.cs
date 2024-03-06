@@ -6,20 +6,24 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public Global PhysicsStats;
-    public TMP_InputField Gravity;
-    public TMP_InputField AirDensity;
-    public TMP_InputField Mass;
+    [SerializeField] Global _physicsStats;
+    [SerializeField] TMP_InputField _gravity;
+    [SerializeField] TMP_InputField _airDensity;
+    [SerializeField] TMP_InputField _mass;
     [SerializeField] Toggle _toggle;
+    [SerializeField] Slider _slider;
+    [SerializeField] TextMeshProUGUI _sliderText;
     // Start is called before the first frame update
     void Start()
     {
-        _toggle.isOn = PhysicsStats.CalculateAirResistance;
-        AirResistance();
+        _toggle.isOn = _physicsStats.CalculateAirResistance;
+        _slider.value = _physicsStats.Elasticity;
+        _gravity.text = _physicsStats.Gravity.ToString() + "m/s^2";
+        _airDensity.text = _physicsStats.AirDensity.ToString() + "kg/m^3";
+        _mass.text = _physicsStats.Mass.ToString() + "kg";
 
-        Gravity.text = PhysicsStats.Gravity.ToString() + "m/s^2";
-        AirDensity.text = PhysicsStats.AirDensity.ToString() + "kg/m^3";
-        Mass.text = PhysicsStats.Mass.ToString() + "kg";
+        AirResistance();
+        SliderValue();
     }
 
     public void ChangeValue(TMP_InputField inputField)
@@ -29,17 +33,17 @@ public class UIManager : MonoBehaviour
 
         if (tryNum && num > 0)
         {
-            if (inputField == Gravity)
+            if (inputField == _gravity)
             {
-                PhysicsStats.Gravity = num;
+                _physicsStats.Gravity = num;
             }
-            else if (inputField == AirDensity)
+            else if (inputField == _airDensity)
             {
-                PhysicsStats.AirDensity = num;
+                _physicsStats.AirDensity = num;
             }
             else
             {
-                PhysicsStats.Mass = num;
+                _physicsStats.Mass = num;
             }
         }
         else
@@ -50,11 +54,17 @@ public class UIManager : MonoBehaviour
 
     public void AirResistance()
     {
-        AirDensity.gameObject.SetActive(_toggle.isOn);
+        _airDensity.gameObject.SetActive(_toggle.isOn);
     }
 
     public void CalculateAirResistance()
     {
-        PhysicsStats.CalculateAirResistance = _toggle.isOn;
+        _physicsStats.CalculateAirResistance = _toggle.isOn;
+    }
+
+    public void SliderValue()
+    {
+        _sliderText.text = System.Math.Round(_slider.value, 1).ToString();
+        _physicsStats.Elasticity = _slider.value;
     }
 }
