@@ -9,7 +9,7 @@ public class ThrowManager : MonoBehaviour
     public static ThrowManager Instance;
 
     public GameObject Throwable;
-    public TMP_InputField InputFieldForce;
+    public TMP_InputField InputFieldVelocity;
     public TMP_InputField InputFieldAngle;
     Physics _physics;
     LineRenderer _line;
@@ -87,7 +87,7 @@ public class ThrowManager : MonoBehaviour
 
             _throwAngle = Mathf.Atan2(_throwVector.y, _throwVector.x) * Mathf.Rad2Deg;
 
-            InputFieldForce.text = _throwVector.magnitude.ToString() + "N";
+            InputFieldVelocity.text = _throwVector.magnitude.ToString() + "N";
             InputFieldAngle.text = _throwAngle.ToString() + " grader";
         }
         if (Input.GetMouseButtonUp(0) && _pressed)
@@ -101,14 +101,12 @@ public class ThrowManager : MonoBehaviour
         _pressed = Input.GetMouseButton(0);
     }
 
-    public void Throw(float force, float angle, bool button)
+    public void Throw(float velocity, float angle, bool button)
     {
         angle *= Mathf.Deg2Rad;
         Vector2 normalization = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-        Debug.Log(normalization);
-        Debug.Log(force);
-        _physics.AddForce(normalization * force);
-        ResultManager.Instance.StartVelocity = force;
+        _physics.AddVelocity(normalization * velocity);
+        ResultManager.Instance.StartVelocity = velocity;
         Thrown = true;
     }
 }

@@ -36,7 +36,10 @@ public class Physics : MonoBehaviour
 
         if (IsGrounded && Velocity.y < 0)
         {
-            Velocity.y = 0;
+            //Velocity.x *= Velocity.normalized.x;
+            //Velocity.y = Velocity.y * Velocity.normalized.y - Stats.Gravity * Time.deltaTime;
+            Velocity.x *= Stats.Elasticity;
+            Velocity.y *= -Stats.Elasticity;
         }
         else
         {
@@ -60,8 +63,8 @@ public class Physics : MonoBehaviour
         transform.position += (Vector3)Velocity * Time.deltaTime;
     }
 
-    public void AddForce(Vector2 force)
+    public void AddVelocity(Vector2 velocity)
     {
-        Velocity += force/Stats.Mass;
+        Velocity += velocity;
     }
 }

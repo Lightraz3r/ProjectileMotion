@@ -202,9 +202,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Kraft
-
-'
+  m_text: Hastighet
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -743,7 +741,7 @@ GameObject:
   - component: {fileID: 280434778}
   - component: {fileID: 280434781}
   m_Layer: 5
-  m_Name: InputField (TMP) Force
+  m_Name: InputField (TMP) Velocity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -937,7 +935,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &284097791
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1485,6 +1483,7 @@ MonoBehaviour:
   Gravity: {fileID: 1621697479}
   AirDensity: {fileID: 1599861871}
   Mass: {fileID: 284097793}
+  _toggle: {fileID: 2071254670}
 --- !u!4 &596211354
 Transform:
   m_ObjectHideFlags: 0
@@ -2482,7 +2481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Throwable: {fileID: 1513463531}
-  InputFieldForce: {fileID: 280434778}
+  InputFieldVelocity: {fileID: 280434778}
   InputFieldAngle: {fileID: 184242716}
 --- !u!120 &1289505693
 LineRenderer:
@@ -3138,7 +3137,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1599861868}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
   m_Name: 
@@ -4038,7 +4037,6 @@ GameObject:
   - component: {fileID: 2071254669}
   - component: {fileID: 2071254670}
   - component: {fileID: 2071254671}
-  - component: {fileID: 2071254672}
   m_Layer: 5
   m_Name: Toggle
   m_TagString: Untagged
@@ -4115,9 +4113,21 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2071254672}
-        m_TargetAssemblyTypeName: ToggleScript, Assembly-CSharp
+      - m_Target: {fileID: 596211353}
+        m_TargetAssemblyTypeName: InputFieldManager, Assembly-CSharp
         m_MethodName: CalculateAirResistance
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 596211353}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: AirResistance
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4140,20 +4150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ae6f296ac6991e46a9c052035536b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2071254672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2071254668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1daa8e25f6ce84149becb739c042ed8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PhysicsStats: {fileID: 11400000, guid: e595843db8ba83e47b0c1e2fc20a3f9c, type: 2}
-  _toggle: {fileID: 2071254670}
 --- !u!1 &2077147826
 GameObject:
   m_ObjectHideFlags: 0
