@@ -89,7 +89,7 @@ public class ThrowManager : MonoBehaviour
 
             _throwAngle = Mathf.Atan2(_throwVector.y, _throwVector.x) * Mathf.Rad2Deg;
 
-            InputFieldVelocity.text = _throwVector.magnitude.ToString() + "N";
+            InputFieldVelocity.text = _throwVector.magnitude.ToString() + "m/s";
             InputFieldAngle.text = _throwAngle.ToString() + " grader";
         }
         if (Input.GetMouseButtonUp(0) && _pressed)
